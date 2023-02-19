@@ -13,13 +13,13 @@ Redux is a state management system for cross component or app wide state.Helps m
 2. Cross Component State
 3. App Wide State
 
-1. Local State -
+1.Local State -
 Local state is state so data changes that affects the UI which belongs to a single component.State that belongs to single component.eg.Listening to user input in a input field or toggling show more state.Should use useState or useReducer
 
-2. Cross Component State
+2.Cross Component State
 State that affects multiple components. eg Modal/Overlay component . Can use useState and useReducer.Requuires props chain / props drilling .
 
-3. App Wide State 
+3.App Wide State 
 State that effects the entire app (most/all components).Eg User Authentication.
 
 Redux / React Context can help us manage Cross component or app wide state.
