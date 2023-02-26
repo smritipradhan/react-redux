@@ -7,7 +7,7 @@ Basic Redux Concepts + Redux Toolkit + Advance Redux Concepts
 1.Redux Basics & using Redux with React
 2.Redux Toolkit
 
-Redux is a state management system for cross component or app wide state.Helps manag data across multiple components or even the complete app. We can split the definition of state into three main kinds of state. 
+Redux is a state management system for cross component or app wide state.Helps manage data across multiple components or even the complete app. We can split the definition of state into three main kinds of state. 
 
 1. Local State
 2. Cross Component State
@@ -44,3 +44,14 @@ We have actions and Component dispatch actions and therefore component triggers 
 When we will use Redux we may get the warning that createStore is deprecated warning.We can still use it as Redux team recommends us to use Redux toolkit which is another way of creating Redux.
 
 ## Exploring the Core Concepts of Redux
+We wont use a React app . Add an empty folder and create a JS file . I named the file as redux-demo.js. We will use node.js to run as Node.js allows us to run JS code outside the browser.
+1 . Open the Terminal 
+2 . Navigate to the folder 
+3 . Run npm init / npm init -y     //(-y which answers all questions with yes)
+4 . we got package.json which we can use to install Redux.
+5 . npm install redux 
+
+Now we will start working with redux-demo.js . We will import and create a store using the redux object.It needs to manage the data and data it manages in the end is determined by the Reducer function because it is the reducer function which will give the new state snapshots.The reducer function is a standard function by Javascript but it will be called by Redud library and it will recieve two pieces of inputs.
+
+Inputs : - Old State + Dispatched Action
+
