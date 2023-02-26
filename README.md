@@ -49,9 +49,90 @@ We wont use a React app . Add an empty folder and create a JS file . I named the
 2 . Navigate to the folder 
 3 . Run npm init / npm init -y     //(-y which answers all questions with yes)
 4 . we got package.json which we can use to install Redux.
-5 . npm install redux 
+5 . npm install react-redux 
 
 Now we will start working with redux-demo.js . We will import and create a store using the redux object.It needs to manage the data and data it manages in the end is determined by the Reducer function because it is the reducer function which will give the new state snapshots.The reducer function is a standard function by Javascript but it will be called by Redud library and it will recieve two pieces of inputs.
+And it should be a pure function so it should not contain HTTP Request , or fetch something from localStorage.
 
 Inputs : - Old State + Dispatched Action
+Output : -  New State Object
+
+redux-demo.js
+```
+const redux = require("redux");
+
+const initialState = { counter : 0 }
+
+const counterReducer = (state = initialState, action) => {
+    return {
+        counter: state.counter + 1, 
+    };
+};
+
+const store = redux.createStore(counterReducer); //Create a Redux store and stored it in store
+
+
+```
+Now we need someone who subscribes to the store and an Action to be dispatched .We define a function counterSubscriber in which we use store.getState method which is available on the store created with createStore() and it will give the latest state snapshot after it was updated.
+
+Now we need to make Redux aware of the Subscriber function and tell this function should be executed whenever our state changes.
+
+redux-demo.js
+```
+const counterSubscriber = () => {
+    const latestState = store.getState();
+    console.log(latestState);
+}
+
+store.subcribe(counterSubscriber);
+```
+
+SO, we will use another function subscribe which is available on store and it will be executed whenever the state changes.Therefore we pass the counterSubscriber to the subscribe function. We do not execute but just point at the function in subscribe because REDUX will then execute it for us.
+
+We can now dispatch an action . store has another function on it called as dispatch which dispatches an action . Now action is an Javascript object which with type property and a payload. Type is a unique identifier which tells the reducer function which actions should be performed.
+
+```
+store.dispatch({type:'increament'});
+
+```
+Here, we will run this and it will give output as -- { counter: 2 } . Because the reducer ran for the first time increamented the counter by 1 and then again we dispatched an action and the reducer fucntion ran again and then increamented the value of the counter by 1.Resulting it to 2.We did not use the type in the reducer so it does the same action again.
+
+(Note - This example is dummy to make us understand the different actions gives different outputs.)
+The goal of the Reducer is to do different things inside of the reducer for different actions. And thats why we got a second arguement in the Reducer function.So, we can have action.type as increment and decrement and change counter value accordingly.
+And the default return is the initial counter value .
+
+
+```
+const redux = require("redux");
+
+const initialState = { counter: 0 };
+
+const counterReducer = (state = initialState, action) => {
+  if (action.type === "increment") {
+    return { counter: state.counter + 1 };
+  } else if (action.type === "decrement") {
+    return { counter: state.counter - 1 };
+  }
+  return {
+    counter: state.counter,
+  };
+};
+
+const store = redux.createStore(counterReducer); //Create a Redux store and stored it in store
+
+const counterSubscriber = () => {
+  const latestState = store.getState();
+  console.log(latestState);
+};
+
+store.subscribe(counterSubscriber);
+store.dispatch({ type: "increment" });
+store.dispatch({ type: "decrement" });
+
+```
+Output
+```
+{ counter: 1 }
+{ counter: 0 }
+```
 
