@@ -1,11 +1,12 @@
-# React Redux + Redux Toolkit + Advance Redux Concepts
+# React Redux
 
 React Project
 Author : Smriti Pradhan 19-02-2023
-Basic Redux Concepts + Redux Toolkit + Advance Redux Concepts
+Basic Redux Concepts (Mock Example to understand Redux concepts - Using Redux in JS Application and Redux wiht React)
+Understanding Multiple States in Redux and way of updating the state.
+For understanding more on Redux - Watch out my Redux Toolkit Repo (In Progress...)
 
 1.Redux Basics & using Redux with React
-2.Redux Toolkit
 
 Redux is a state management system for cross component or app wide state.Helps manage data across multiple components or even the complete app. We can split the definition of state into three main kinds of state.
 
@@ -199,3 +200,115 @@ root.render(
   </Provider>
 );
 ```
+
+## Using Redux Data
+
+```
+import classes from "./Counter.module.css";
+import { useSelector } from "react-redux";
+
+const Counter = () => {
+  const toggleCounterHandler = () => {};
+  const counter = useSelector((state) => state.counter);
+  return (
+    <main className={classes.counter}>
+      <h1>Redux Counter</h1>
+      <div className={classes.value}>{counter}</div>
+      <button onClick={toggleCounterHandler}>Toggle Counter</button>
+    </main>
+  );
+};
+
+export default Counter;
+```
+
+when you use use selector,React Redux will automatically set up a subscription to the Redux store for this component. So your component will be updated and will receive the latest counter automatically whenever that data changes in the Redux store. So it's an automatically reactive and changes to the Redux store will cause this component function to be re executed.So you always have the latest counter.That's why use selector is a very useful hook and why it is the hook we use for getting data out of the store.
+
+## Dispatching Actions from Components
+
+```
+import classes from "./Counter.module.css";
+import { useSelector, useDispatch } from "react-redux";
+
+const Counter = () => {
+  const toggleCounterHandler = () => {};
+  const counter = useSelector((state) => state.counter);
+  const dispatch = useDispatch();
+
+  const handleIncreament = () => {
+    dispatch({ type: "INCREAMENT" });
+  };
+
+  const handleDecreament = () => {
+    dispatch({ type: "DECREAMENT" });
+  };
+  return (
+    <main className={classes.counter}>
+      <h1>Redux Counter</h1>
+      <div className={classes.value}>{counter}</div>
+      <button onClick={handleIncreament}>INCREAMENT</button>
+
+      <button onClick={handleDecreament}>DECREAMENT</button>
+      <button onClick={toggleCounterHandler}>Toggle Counter</button>
+    </main>
+  );
+};
+
+export default Counter;
+
+```
+
+## Attaching Payloads to Actions
+
+dispatch({type:"Increament" , action : amount })
+
+case "RANDOM":
+return { counter: state.counter + action.amount };
+
+Both should have same name.
+
+## Working with Multiple State Properties
+
+Redux will take the entire state you return and replace it. It wont merge it.
+Now I want to use multiple states.I want to make sure the counter is hidden when i click on the toggle button.Well, to add a new piece of data, we need to go to our reducer in the end and just add it to all these state snapshots which we are producing.If we dont update all these state snapshots then it will return undefined value and undefined is a FALSY VALUE.It will trigger some side effects which is not expected.
+
+So for other states where we are not doing anything to the second state, we will just return the same value.
+eg - showCounter:state.showCounter
+
+```
+import { createStore } from "redux";
+
+const initialState = { counter: 0, showCounter: false };
+
+const counterReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case "INCREAMENT":
+      return { counter: state.counter + 1, showCounter: state.showCounter };
+
+    case "DECREAMENT":
+      return { counter: state.counter - 1, showCounter: state.showCounter };
+
+    case "TOGGLE":
+      return { counter: state.counter, showCounter: !state.showCounter };
+
+    default:
+      return state;
+  }
+};
+const store = createStore(counterReducer);
+export default store;
+
+```
+
+## How to work with Redux Correctly?
+
+We return a branch new state object which Redux will use to replace its existing state with.So the object which we return will not merge with the existing state.They will overwrite the existing State.There will be side effects if we dont follow it.So we must always set all the other states if if update one state because we overwrite the existing state.
+We should never mutate the state.We should never mutate the existing state.Instead always override it by returning a branch new state object.This can lead to bugs, unpredictable behavior and it can make debugging your application harder as well.
+Its very easy in Javascript to mutate the objects and Arrays as they are reference types (for more - https://academind.com/tutorials/reference-vs-primitive-values/) . The connector between the component and the redux store will not hear the updates and hence the UI may go out of sync and may lead to bugs in bigger application.
+
+The key of the "no-mutations" mantra is that if you can not mutate the object, you are forced to create a new one (with the properties of the original object plus the new ones).
+
+To update the components when an action is dispatched, connector between Redux and React checks if the object is different, not if the properties have changed (which is a lot faster), so:
+
+If you create a new object, Redux will see that the object is not the same, so it will trigger the components updates.
+If you mutate the objet that it is already in the store (adding or changing a property, for example) Redux will not see the change, so it will not update the components.So even though it doesn't lead to a bug here it can have unwanted and unexpected side effects in bigger applications where your state gets out of sync. And suddenly the UI is not reflecting your state correctly anymore.
