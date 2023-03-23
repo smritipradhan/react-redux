@@ -306,8 +306,6 @@ We return a branch new state object which Redux will use to replace its existing
 We should never mutate the state.We should never mutate the existing state.Instead always override it by returning a branch new state object.This can lead to bugs, unpredictable behavior and it can make debugging your application harder as well.
 Its very easy in Javascript to mutate the objects and Arrays as they are reference types (for more - https://academind.com/tutorials/reference-vs-primitive-values/) . The connector between the component and the redux store will not hear the updates and hence the UI may go out of sync and may lead to bugs in bigger application.
 
-The key of the "no-mutations" mantra is that if you can not mutate the object, you are forced to create a new one (with the properties of the original object plus the new ones).
-
 To update the components when an action is dispatched, connector between Redux and React checks if the object is different, not if the properties have changed (which is a lot faster), so:
 
 If you create a new object, Redux will see that the object is not the same, so it will trigger the components updates.
