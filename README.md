@@ -4,7 +4,7 @@ React Project
 Author : Smriti Pradhan 19-02-2023
 Basic Redux Concepts (Mock Example to understand Redux concepts - Using Redux in JS Application and Redux wiht React)
 Understanding Multiple States in Redux and way of updating the state.
-For understanding more on Redux - Watch out my Redux Toolkit Repo (In Progress...)
+For understanding more on Redux - Watch out my Redux Toolkit Repo (In Progress... https://github.com/smritipradhan/react-redux-toolkit/tree/main)
 
 1.Redux Basics & using Redux with React
 
